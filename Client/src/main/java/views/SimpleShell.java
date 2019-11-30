@@ -21,7 +21,7 @@ public class SimpleShell {
     }
     public static void main(String[] args) throws java.io.IOException {
 
-        YouAreEll webber = new YouAreEll(new MessageController(), new IdController());
+        YouAreEll webber = new YouAreEll();
         
         String commandLine;
         BufferedReader console = new BufferedReader
@@ -80,6 +80,9 @@ public class SimpleShell {
                     continue;
                 }
                 // you need to add a bunch more.
+                if (list.contains("send")){
+
+                }
 
                 //!! command returns the last command in history
                 if (list.get(list.size() - 1).equals("!!")) {
