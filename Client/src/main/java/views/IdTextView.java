@@ -24,6 +24,10 @@ public class IdTextView {
                 idToDisplay.getName(), idToDisplay.getGitHubId());
     }
 
+    public String toString(Id id){
+        return new IdTextView(id).toString();
+    }
+
     public String toString(ArrayList<Id> idList){
         String output = "";
         for(Id id : idList){

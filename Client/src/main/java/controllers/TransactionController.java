@@ -3,6 +3,9 @@ package controllers;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
@@ -21,9 +24,16 @@ public class TransactionController {
     }
 
     public String MakeURLCall(String mainurl, String method, String jpayload) {
-        try {if (method.equals("GET")){
-            return get(mainurl);
-        }}
+        try {if (method.equals("GET")) {
+                return get(mainurl);
+            }
+            else if (method.equals("PUT")){
+                return put(mainurl, jpayload);
+            }
+            else if (method.equals("POST")){
+                return post(mainurl, jpayload);
+            }
+        }
         catch(Exception e){
             e.printStackTrace();
         }
@@ -56,6 +66,54 @@ public class TransactionController {
         }
         finally {
             response1.close();
+        }
+        return null;
+    }
+
+    public String put(String mainurl, String payload) throws IOException {
+        HttpPut httpPut = new HttpPut(rootURL + mainurl);
+        httpPut.setEntity(new StringEntity(payload));
+        CloseableHttpResponse response2 = httpClient.execute(httpPut);
+
+        try {
+            System.out.println(response2.getStatusLine());
+            HttpEntity entity2 = response2.getEntity();
+            String result = new BufferedReader(new InputStreamReader(entity2.getContent()))
+                    .lines().collect(Collectors.joining("\n"));
+            // do something useful with the response body
+            // and ensure it is fully consumed
+            EntityUtils.consume(entity2);
+//            System.out.println(result);
+            return result;
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            response2.close();
+        }
+        return null;
+    }
+
+    public String post(String mainurl, String payload) throws IOException {
+        HttpPost httpPost = new HttpPost(rootURL + mainurl);
+        httpPost.setEntity(new StringEntity(payload));
+        CloseableHttpResponse response2 = httpClient.execute(httpPost);
+
+        try {
+            System.out.println(response2.getStatusLine());
+            HttpEntity entity2 = response2.getEntity();
+            String result = new BufferedReader(new InputStreamReader(entity2.getContent()))
+                    .lines().collect(Collectors.joining("\n"));
+            // do something useful with the response body
+            // and ensure it is fully consumed
+            EntityUtils.consume(entity2);
+//            System.out.println(result);
+            return result;
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            response2.close();
         }
         return null;
     }

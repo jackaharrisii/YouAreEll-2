@@ -68,8 +68,17 @@ public class SimpleShell {
 
                 // ids
                 if (list.contains("ids")) {
-                    String results = webber.get_ids();
-                    SimpleShell.prettyPrint(results);
+                    if (list.size() == 1) {
+                        String results = webber.get_ids();
+                        SimpleShell.prettyPrint(results);
+                    }
+                    else if (list.get(1).equals("setCurrent")){
+
+                    }
+                    else {
+                        String results = webber.putOrPostId(list.get(1), list.get(2));
+                        SimpleShell.prettyPrint(results);
+                    }
                     continue;
                 }
 

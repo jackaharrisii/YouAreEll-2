@@ -1,6 +1,7 @@
 package youareell;
 
 import controllers.*;
+import models.Id;
 import views.IdTextView;
 
 public class YouAreEll {
@@ -26,6 +27,18 @@ public class YouAreEll {
     public String get_ids() {
 //        return MakeURLCall("/ids", "GET", "");
         return new IdTextView().toString(idCtrl.getIds());
+    }
+
+    public String putOrPostId(String name, String gitHubId){
+        for (Id dbID : idCtrl.getIds()){
+            if (gitHubId.equals(dbID.getGitHubId())){
+                idCtrl.putId(name, gitHubId);
+                return new IdTextView().toString(idCtrl.getIDByGHID(gitHubId));
+            }
+        }
+        Id newID = new Id(name, gitHubId);
+        idCtrl.postId(newID);
+        return idCtrl.getIDByGHID(gitHubId).toString();
     }
 
     public String get_messages() {
