@@ -100,7 +100,7 @@ public class TransactionController {
         CloseableHttpResponse response2 = httpClient.execute(httpPost);
 
         try {
-            System.out.println(response2.getStatusLine());
+//            System.out.println(response2.getStatusLine());
             HttpEntity entity2 = response2.getEntity();
             String result = new BufferedReader(new InputStreamReader(entity2.getContent()))
                     .lines().collect(Collectors.joining("\n"));

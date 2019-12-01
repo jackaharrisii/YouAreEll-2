@@ -2,6 +2,7 @@ package youareell;
 
 import controllers.*;
 import models.Id;
+import models.Message;
 import views.IdTextView;
 
 public class YouAreEll {
@@ -9,6 +10,9 @@ public class YouAreEll {
     private MessageController msgCtrl;
     private IdController idCtrl;
     private TransactionController transCtrl;
+    private Id fromID;
+    private Id toID;
+    private Message messageToSend;
 
     public YouAreEll () {
         // used j because i seems awkward
@@ -29,6 +33,27 @@ public class YouAreEll {
         return new IdTextView().toString(idCtrl.getIds());
     }
 
+    public String setCurrent (String gitHubId){
+        for (Id dbID : idCtrl.getIds()){
+            if (gitHubId.equals(dbID.getGitHubId())){
+                System.out.println("\n" +
+                        "\n\n*******************************************\n" +
+                        "The below GitHub ID is now your current ID:");
+                return new IdTextView().toString(idCtrl.makeIdCurrent(dbID));
+            }
+        }
+        return "That ID is not in the current database. Please select another.";
+    }
+
+    public String getCurrent (){
+        System.out.println("\n\n");
+        if (idCtrl.getMyId() != null) {
+            return new IdTextView().toString(idCtrl.getMyId());
+        }
+        else return "There is no current ID set in the system yet.\n" +
+                "Use the command \"ids setCurrent [your ID]\" to set the current ID.";
+    }
+
     public String putOrPostId(String name, String gitHubId){
         for (Id dbID : idCtrl.getIds()){
             if (gitHubId.equals(dbID.getGitHubId())){
@@ -46,5 +71,12 @@ public class YouAreEll {
         return null;
     }
 
+    public String sendMessage(String you, String me, String messageBody){
+        if (me.equals("")) me = getCurrent();
+        messageToSend = new Message(messageBody, me, you);
+        fromID = idCtrl.getIDByGHID(me);
+        toID = idCtrl.getIDByGHID(you);
+        return msgCtrl.postMessage(fromID, toID, messageToSend).toString();
+    }
 
 }

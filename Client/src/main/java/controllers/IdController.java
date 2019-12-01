@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import models.Id;
 
 public class IdController {
-    Id myId;
+    private Id myId;
     private TransactionController transCtrl;
     private ArrayList<Id> idList;
 
@@ -22,11 +22,16 @@ public class IdController {
 //            System.out.println(response);
             ObjectMapper objectMapper = new ObjectMapper();
             this.idList = objectMapper.readValue(response, new TypeReference<ArrayList<Id>>() {});
-            return this.idList;
+            return getIdList();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public Id makeIdCurrent(Id newCurrentID){
+        setMyId(newCurrentID);
+        return myId;
     }
 
     public Id postId(Id id) {
@@ -35,7 +40,7 @@ public class IdController {
             String thisId = objectMapper.writeValueAsString(id);
             String response = transCtrl.MakeURLCall("/ids","POST", thisId);
             getIds();
-            System.out.println(response);
+//            System.out.println(response);
             return getIDByGHID(id.getGitHubId());
         } catch (Exception e) {
             e.printStackTrace();
@@ -71,4 +76,19 @@ public class IdController {
             return null;
         }
 
+    public Id getMyId() {
+        return myId;
+    }
+
+    private void setMyId(Id myId) {
+        this.myId = myId;
+    }
+
+    private ArrayList<Id> getIdList() {
+        return idList;
+    }
+
+    public void setIdList(ArrayList<Id> idList) {
+        this.idList = idList;
+    }
 }

@@ -9,6 +9,7 @@ import java.util.List;
 
 import controllers.IdController;
 import controllers.MessageController;
+import sun.java2d.pipe.SpanShapeRenderer;
 import youareell.YouAreEll;
 
 // Simple Shell is a Console view for youareell.YouAreEll.
@@ -72,10 +73,15 @@ public class SimpleShell {
                         String results = webber.get_ids();
                         SimpleShell.prettyPrint(results);
                     }
-                    else if (list.get(1).equals("setCurrent")){
-
+                    else if (list.size() == 3 && list.get(1).equals("setCurrent")){
+                        String results = webber.setCurrent(list.get(2));
+                        SimpleShell.prettyPrint(results);
                     }
-                    else {
+                    else if (list.size() == 2 && list.get(1).equals("getCurrent")){
+                        String results = webber.getCurrent();
+                        SimpleShell.prettyPrint(results);
+                    }
+                    else if (list.size() >= 3){
                         String results = webber.putOrPostId(list.get(1), list.get(2));
                         SimpleShell.prettyPrint(results);
                     }
@@ -90,7 +96,27 @@ public class SimpleShell {
                 }
                 // you need to add a bunch more.
                 if (list.contains("send")){
-
+                    int msgStartIndex = 0;
+                    int msgEndIndex = 0;
+                    String fromID = "";
+                    String toID = "";
+                    String message = "";
+                    for (int i = 0; i < list.size(); i++){
+                        if (list.get(i).charAt(0) == '\'') msgStartIndex = i;
+                    }
+                    for (int j = list.size()-1; j >= 0; j--){
+                        if (list.get(j).charAt(list.get(j).length()-1) == '\'') {
+                            msgEndIndex = j;
+                            if (j + 2 < list.size() && list.get(j+1).equals("to")) toID = list.get(j+2);
+                        }
+                    }
+                    if (msgStartIndex > 1) fromID = list.get(1);
+                    while (msgStartIndex <= msgEndIndex){
+                        message += list.get(msgStartIndex);
+                        msgStartIndex++;
+                    }
+                    String results = webber.sendMessage(toID, fromID, message);
+                    SimpleShell.prettyPrint(results);
                 }
 
                 //!! command returns the last command in history

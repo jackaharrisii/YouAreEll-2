@@ -17,10 +17,10 @@ public class IdTextView {
 
     @Override public String toString() {
         return String.format(
-                "******************************************\n" +
+                "*******************************************\n" +
                 "Name: %s\n" +
                 "GitHub ID: %s\n" +
-                "******************************************\n\n",
+                "*******************************************\n\n",
                 idToDisplay.getName(), idToDisplay.getGitHubId());
     }
 
