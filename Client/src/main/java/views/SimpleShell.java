@@ -9,7 +9,7 @@ import java.util.List;
 
 import controllers.IdController;
 import controllers.MessageController;
-import sun.java2d.pipe.SpanShapeRenderer;
+//import sun.java2d.pipe.SpanShapeRenderer;
 import youareell.YouAreEll;
 
 // Simple Shell is a Console view for youareell.YouAreEll.
@@ -107,16 +107,18 @@ public class SimpleShell {
                     for (int j = list.size()-1; j >= 0; j--){
                         if (list.get(j).charAt(list.get(j).length()-1) == '\'') {
                             msgEndIndex = j;
-                            if (j + 2 < list.size() && list.get(j+1).equals("to")) toID = list.get(j+2);
+//                            if (j + 2 < list.size() && list.get(j+1).equals("to")) toID = list.get(j+2);
                         }
                     }
                     if (msgStartIndex > 1) fromID = list.get(1);
                     while (msgStartIndex <= msgEndIndex){
-                        message += list.get(msgStartIndex);
+                        message += list.get(msgStartIndex) + " ";
                         msgStartIndex++;
                     }
+                    toID = list.get(list.size()-1);
                     String results = webber.sendMessage(toID, fromID, message);
                     SimpleShell.prettyPrint(results);
+                    continue;
                 }
 
                 //!! command returns the last command in history

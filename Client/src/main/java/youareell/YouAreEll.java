@@ -4,6 +4,7 @@ import controllers.*;
 import models.Id;
 import models.Message;
 import views.IdTextView;
+import views.MessageTextView;
 
 public class YouAreEll {
 
@@ -18,7 +19,7 @@ public class YouAreEll {
         // used j because i seems awkward
         this.transCtrl = new TransactionController();
         this.idCtrl = new IdController(transCtrl);
-
+        this.msgCtrl = new MessageController(transCtrl);
     }
 
 //    public static void main(String[] args) {
@@ -75,8 +76,14 @@ public class YouAreEll {
         if (me.equals("")) me = getCurrent();
         messageToSend = new Message(messageBody, me, you);
         fromID = idCtrl.getIDByGHID(me);
-        toID = idCtrl.getIDByGHID(you);
-        return msgCtrl.postMessage(fromID, toID, messageToSend).toString();
+        if (idCtrl.getIDByGHID(you) == null || you.equals("")){
+            //send the message "to the world", whatever that means
+        }
+//        else if (idCtrl.getIDByGHID(you) != null) {
+        else {
+            toID = idCtrl.getIDByGHID(you);
+        }
+        return new MessageTextView().toString(msgCtrl.postMessage(fromID, toID, messageToSend));
     }
 
 }

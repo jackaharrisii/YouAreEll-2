@@ -9,6 +9,10 @@ public class MessageTextView {
     public MessageTextView(Message msgToDisplay) {
         this.msgToDisplay = msgToDisplay;
     }
+
+    public MessageTextView() {
+    }
+
     @Override public String toString() {
         return String.format(
                 "*******************************************\n" +
@@ -18,6 +22,10 @@ public class MessageTextView {
                         "*******************************************\n\n",
                 msgToDisplay.getFromId(), msgToDisplay.getToId(), msgToDisplay.getMessage()
         );
+    }
+
+    public String toString(Message message){
+        return new MessageTextView(message).toString();
     }
 
 }
