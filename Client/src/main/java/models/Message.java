@@ -1,18 +1,35 @@
 package models;
 
-/* 
+import java.util.Date;
+
+/*
  * POJO for an Message object
  */
+//@JsonIgnoreProperties(ignoreUnknown = true)
 public class Message {
 
+    String sequence;
+    Date timestamp;
     String message;
-    String fromId;
-    String toId;
+    String fromid;
+    String toid;
 
-    public Message (String message, String fromId, String toId) {
+    public Message (){}
+
+    public Message (String fromid, String toid, String message) {
         this.message = message;
-        this.fromId = fromId;
-        this.toId = toId;
+        this.fromid = fromid;
+        this.toid = toid;
+        this.sequence = "-";
+        this.timestamp = null;
+    }
+
+    public Message (String sequence, Date timestamp, String fromid, String toid, String message){
+        this.message = message;
+        this.fromid = fromid;
+        this.toid = toid;
+        this.sequence = sequence;
+        this.timestamp = timestamp;
     }
 
     public String getMessage() {
@@ -23,19 +40,35 @@ public class Message {
         this.message = message;
     }
 
-    public String getFromId() {
-        return fromId;
+    public String getFromid() {
+        return fromid;
     }
 
-    public void setFromId(String fromId) {
-        this.fromId = fromId;
+    public void setFromid(String fromid) {
+        this.fromid = fromid;
     }
 
-    public String getToId() {
-        return toId;
+    public String getToid() {
+        return toid;
     }
 
-    public void setToId(String toId) {
-        this.toId = toId;
+    public void setToid(String toid) {
+        this.toid = toid;
+    }
+
+    public String getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(String sequence) {
+        this.sequence = sequence;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
     }
 }

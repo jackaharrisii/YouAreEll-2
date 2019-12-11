@@ -2,6 +2,8 @@ package views;
 
 import models.Message;
 
+import java.util.ArrayList;
+
 public class MessageTextView {
 
     Message msgToDisplay;
@@ -20,12 +22,20 @@ public class MessageTextView {
                         "To: %s\n" +
                         "Message: %s\n" +
                         "*******************************************\n\n",
-                msgToDisplay.getFromId(), msgToDisplay.getToId(), msgToDisplay.getMessage()
+                msgToDisplay.getFromid(), msgToDisplay.getToid(), msgToDisplay.getMessage()
         );
     }
 
     public String toString(Message message){
         return new MessageTextView(message).toString();
+    }
+
+    public String toString(ArrayList<Message> msgList){
+        String output = "";
+        for (Message msg : msgList){
+            output += new MessageTextView(msg).toString();
+        }
+        return output;
     }
 
 }

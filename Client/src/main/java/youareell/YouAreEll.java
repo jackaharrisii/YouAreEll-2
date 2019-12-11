@@ -68,13 +68,14 @@ public class YouAreEll {
     }
 
     public String get_messages() {
+        return new MessageTextView().toString(this.msgCtrl.getMessages());
 //        return MakeURLCall("/messages", "GET", "");
-        return null;
+//        return null;
     }
 
     public String sendMessage(String you, String me, String messageBody){
         if (me.equals("")) me = getCurrent();
-        messageToSend = new Message(messageBody, me, you);
+        messageToSend = new Message(me, you, messageBody);
         fromID = idCtrl.getIDByGHID(me);
         if (idCtrl.getIDByGHID(you) == null || you.equals("")){
             //send the message "to the world", whatever that means

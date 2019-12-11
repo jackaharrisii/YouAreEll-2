@@ -2,6 +2,9 @@ package controllers;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import org.json.JSONObject;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,6 +13,7 @@ import models.Message;
 
 public class MessageController {
     private TransactionController transCtrl;
+    private ArrayList<Message> msgList = new ArrayList<>();
 
     public MessageController(TransactionController transCtrl){
         this.transCtrl = transCtrl;
@@ -19,6 +23,16 @@ public class MessageController {
     // why a HashSet??
 
     public ArrayList<Message> getMessages() {
+        try {
+            String response = transCtrl.MakeURLCall("/messages", "GET", "");
+            ObjectMapper objectMapper = new ObjectMapper();
+//            objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+//            Community c = objectMapper.readValue(JSON, Community.class);
+            this.msgList = objectMapper.readValue(response, new TypeReference<ArrayList<Message>>() {});
+            return this.getMsgList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
     public ArrayList<Message> getMessagesForId(Id Id) {
@@ -52,5 +66,8 @@ public class MessageController {
         }
         return null;
     }
- 
+
+    public ArrayList<Message> getMsgList() {
+        return msgList;
+    }
 }
