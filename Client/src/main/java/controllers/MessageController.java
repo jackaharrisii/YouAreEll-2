@@ -1,5 +1,6 @@
 package controllers;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -35,9 +36,27 @@ public class MessageController {
         }
         return null;
     }
-    public ArrayList<Message> getMessagesForId(Id Id) {
+
+    public ArrayList<Message> getMessages(String githubID){
+        ArrayList<Message> tempOutputMessageList = new ArrayList<>();
+        try {
+            String response = transCtrl.MakeURLCall("/messages", "GET", githubID);
+            ObjectMapper objectMapper = new ObjectMapper();
+            this.msgList = objectMapper.readValue(response, new TypeReference<ArrayList<Message>>() {});
+            for (Message msg : msgList){
+                if (msg.getToid().equals(githubID)) tempOutputMessageList.add(msg);
+            }
+            return tempOutputMessageList;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
+
+    // JUST OVERLOADED THE getMessages METHOD INSTEAD OF USING THIS ONE
+//    public ArrayList<Message> getMessagesForId(Id Id) {
+//        return null;
+//    }
     public Message getMessageForSequence(String seq) {
         return null;
     }
@@ -45,7 +64,7 @@ public class MessageController {
         return null;
     }
 
-    public Message postMessage(Id myId, Id toId, Message msg) {
+    public Message postMessage(Id toId, Id myId, Message msg) {
         String you;
         String me;
         try {
@@ -60,7 +79,7 @@ public class MessageController {
             System.out.println(response);
 //            return objectMapper.readValue(response, Message.class);   // GO BACK AND UPDATE THIS TO GET THE LAST MESSAGE SENT ONCE THAT FUNCTIONALITY IS BUILT
             JSONObject jsonObject = new JSONObject(response);
-            return new Message(jsonObject.get("message").toString(), jsonObject.get("fromid").toString(), jsonObject.get("toid").toString());
+            return new Message(jsonObject.get("toid").toString(), jsonObject.get("fromid").toString(), jsonObject.get("message").toString());
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -69,13 +69,15 @@ public class YouAreEll {
 
     public String get_messages() {
         return new MessageTextView().toString(this.msgCtrl.getMessages());
-//        return MakeURLCall("/messages", "GET", "");
-//        return null;
+    }
+
+    public String get_messages(String githubID){
+        return new MessageTextView().toString(this.msgCtrl.getMessages(githubID));
     }
 
     public String sendMessage(String you, String me, String messageBody){
         if (me.equals("")) me = getCurrent();
-        messageToSend = new Message(me, you, messageBody);
+        messageToSend = new Message(you, me, messageBody);
         fromID = idCtrl.getIDByGHID(me);
         if (idCtrl.getIDByGHID(you) == null || you.equals("")){
             //send the message "to the world", whatever that means
@@ -84,7 +86,7 @@ public class YouAreEll {
         else {
             toID = idCtrl.getIDByGHID(you);
         }
-        return new MessageTextView().toString(msgCtrl.postMessage(fromID, toID, messageToSend));
+        return new MessageTextView().toString(msgCtrl.postMessage(toID, fromID, messageToSend));
     }
 
 }

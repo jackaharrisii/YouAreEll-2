@@ -89,10 +89,17 @@ public class SimpleShell {
                 }
 
                 // messages
-                if (list.contains("messages")) {
-                    String results = webber.get_messages();
-                    SimpleShell.prettyPrint(results);
-                    continue;
+                if (list.contains("messages")){
+                    if (list.size() == 1) {
+                        String results = webber.get_messages();
+                        SimpleShell.prettyPrint(results);
+                        continue;
+                    }
+                    if (list.size() == 2){     // CONSIDER ADDING && list.get(1).equals([SOME METHOD TO GET DIRECTORY OF GITHUB IDS])
+                        String results = webber.get_messages(list.get(1));
+                        SimpleShell.prettyPrint(results);
+                        continue;
+                    }
                 }
                 // you need to add a bunch more.
                 if (list.contains("send")){
@@ -115,7 +122,7 @@ public class SimpleShell {
                         message += list.get(msgStartIndex) + " ";
                         msgStartIndex++;
                     }
-                    toID = list.get(list.size()-1);
+                    if (list.get(list.size()-2).equals("to")) toID = list.get(list.size()-1);
                     String results = webber.sendMessage(toID, fromID, message);
                     SimpleShell.prettyPrint(results);
                     continue;

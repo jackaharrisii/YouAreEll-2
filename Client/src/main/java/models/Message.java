@@ -1,11 +1,13 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Date;
 
 /*
  * POJO for an Message object
  */
-//@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Message {
 
     String sequence;
@@ -16,7 +18,7 @@ public class Message {
 
     public Message (){}
 
-    public Message (String fromid, String toid, String message) {
+    public Message (String toid, String fromid, String message) {
         this.message = message;
         this.fromid = fromid;
         this.toid = toid;
